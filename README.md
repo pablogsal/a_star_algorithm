@@ -18,6 +18,14 @@ It comes with a `test_a_star.py` snippet to test the algorithm in a simple weigh
 <img src="./doc/sample.png">
 </p>
 
+The first diagram represents where each point came from. Starting in the E ( standing for ENDING POINT) we backtrack each arrow untill we reach the S ( standing for STARTING POINT). This path is the shortest path. And you know what? 
+
+**This is also true for every point in the diagram!!!**
+
+The arcane forces of A* make that if you start in a visited point and backtrack using the arrows you will get the shortest path.
+
+The second diagram is the cost to reach each point from the START (S).
+
 # Can you EXPLAIN the algorithm?
 
 Yeah! The idea of the A* algorithm is that starting from the start point we visit the points that are cheaper to visit. The cost of visiting a neighbor point depends on how costly is to go from the current point to a neighbor. So we check for all the points what is the neighbor that is cheaper to visit and we visit it.
