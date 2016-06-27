@@ -24,7 +24,7 @@ class DijkstraHeap(list):
 
     This class will have three main elements:
 
-        - A heap that will act as a priority queue (self).
+        - A heap that will act as a cost queue (self).
         - A visited dict that will act as a visited set and as a mapping of the form  point:came_from
         - A costs dict that will act as a mapping of the form point:cost_so_far
     """
@@ -58,13 +58,13 @@ class DijkstraHeap(list):
 
         next_elem = heapq.heappop(self)
         self.visited[next_elem.point] = next_elem.came_from
-        self.costs[next_elem.point] = next_elem.priority
+        self.costs[next_elem.point] = next_elem.cost
         return next_elem
 
 
 
 
-Node = collections.namedtuple("Node","priority point came_from")
+Node = collections.namedtuple("Node","cost point came_from")
 
 def a_star(graph, start, end):
     """
@@ -92,7 +92,7 @@ def a_star(graph, start, end):
 
         for neighbor in graph.neighbors( current_node.point ):
 
-            new_cost = ( current_node.priority
+            new_cost = ( current_node.cost
                          + graph.cost(current_node.point, neighbor)
                          + heuristic( neighbor, end) )
 

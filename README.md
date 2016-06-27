@@ -48,7 +48,7 @@ def a_star(graph, start, end):
 
     """
 
-    frontier = DijkstraHeap( Node(priority = 0, point = start, came_from = None) )
+    frontier = DijkstraHeap( Node(cost = 0, point = start, came_from = None) )
 
     while frontier:
 
@@ -59,11 +59,11 @@ def a_star(graph, start, end):
 
         for neighbor in graph.neighbors( current_node.point ):
 
-            new_cost = ( current_node.priority
+            new_cost = ( current_node.cost
                          + graph.cost(current_node.point, neighbor)
                          + heuristic( neighbor, end) )
 
-            new_node = Node(priority = new_cost, point = neighbor, came_from=current_node.point)
+            new_node = Node(cost = new_cost, point = neighbor, came_from=current_node.point)
 
             frontier.insert(new_node)
 
@@ -75,7 +75,7 @@ Lets go line by line:
 frontier = DijkstraHeap( Node(0, start, None) )
 ```
 
-This line creates a DijkstraHeap object and puts the starting point in it. We will see later how this can be implemented but the best part is that....This is not part of the algorithm! What is a DijkstraHeap then? This is a **priority queue** that has the following properties:
+This line creates a DijkstraHeap object and puts the starting point in it. We will see later how this can be implemented but the best part is that....This is not part of the algorithm! What is a DijkstraHeap then? This is a **cost queue** that has the following properties:
 
 * If we try to insert an already visited element in the queue the DijkstraHeap will do nothing.
 * The DijkstraHeap always pop the element that has the lowest cost and NEVER pops an already visited element.
@@ -110,11 +110,11 @@ for neighbor in graph.neighbors( current_node.point ):
 We get each of the current point neighbors
 
 ```python
-new_cost = ( current_node.priority
+new_cost = ( current_node.cost
             + graph.cost(current_node.point, neighbor)
             + heuristic( neighbor, end) )
              
-new_node = Node(priority = new_cost, point = neighbor, came_from=current_node.point)
+new_node = Node(cost = new_cost, point = neighbor, came_from=current_node.point)
 
 frontier.insert(new_node)
 
@@ -128,7 +128,7 @@ For each neighbor we calculate the new cost of reaching this neighbor from the c
 
 Why this 3rd cost? Because we want to explore first the points that are near the end destination and expend less time in the points that are far from it. So if we artificially give the point a higher cost if the point is far from the destination it will be visited later.
 
-When we have calculated this new cost we insert the point in the priority queue.
+When we have calculated this new cost we insert the point in the cost queue.
 
 ## But what about the MISTERIOUS DijkstraHeap?
 
@@ -144,7 +144,7 @@ class DijkstraHeap(list):
 
     This class will have three main elements:
 
-        - A heap that will act as a priority queue (self).
+        - A heap that will act as a cost queue (self).
         - A visited dict that will act as a visited set and as a mapping of the form  point:came_from
         - A costs dict that will act as a mapping of the form point:cost_so_far
     """
@@ -178,6 +178,6 @@ class DijkstraHeap(list):
 
         next_elem = heapq.heappop(self)
         self.visited[next_elem.point] = next_elem.came_from
-        self.costs[next_elem.point] = next_elem.priority
+        self.costs[next_elem.point] = next_elem.cost
         return next_elem
 ```
