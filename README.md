@@ -48,22 +48,22 @@ def a_star(graph, start, end):
 
     """
 
-    frontier = DijkstraHeap( Node(0, start, None) )
+    frontier = DijkstraHeap( Node(priority = 0, point = start, came_from = None) )
 
     while frontier:
 
         current_node = frontier.pop()
 
-        if current_node.value == end:
+        if current_node.point == end:
             return frontier
 
-        for neighbor in graph.neighbors( current_node.value ):
+        for neighbor in graph.neighbors( current_node.point ):
 
             new_cost = ( current_node.priority
-                         + graph.cost(current_node.value, neighbor)
+                         + graph.cost(current_node.point, neighbor)
                          + heuristic( neighbor, end) )
 
-            new_node = Node(new_cost, neighbor, current_node.value)
+            new_node = Node(priority = new_cost, point = neighbor, came_from=current_node.point)
 
             frontier.insert(new_node)
 
@@ -75,12 +75,14 @@ Lets go line by line:
 frontier = DijkstraHeap( Node(0, start, None) )
 ```
 
-This line creates a DijkstraHeap object. We will see later how this can be implemented but the best part is that....This is not part of the algorithm! What is a DijkstraHeap then? This is a **priority queue** that has the following properties:
+This line creates a DijkstraHeap object and puts the starting point in it. We will see later how this can be implemented but the best part is that....This is not part of the algorithm! What is a DijkstraHeap then? This is a **priority queue** that has the following properties:
 
 * If we try to insert an already visited element in the queue the DijkstraHeap will do nothing.
 * The DijkstraHeap always pop the element that has the lowest cost and NEVER pops an already visited element.
 
 Cool! So this DijkstraHeap knows the visiting order of the elements. Its **like a heap but never pops an already visited element**.
+
+By the way, a Node object is a tuple of the form ( cost_so_far, point, point_from_we_came ).
 
 ```python
 while frontier:
@@ -95,24 +97,24 @@ current_node = frontier.pop()
 Each iteration we pop an element from the DijkstraHeap. This element always has the lowest cost element because the DijkstraHeap has this property ( because is a heap and heaps are awesome ).
 
 ```python
-if current_node.value == end:
+if current_node.point == end:
     return frontier
 ```
 
 If we have reached the end, we stop and return the DijkstraHeap that has all the information about our path (because it knows how we reach each element).
 
 ```python
-for neighbor in graph.neighbors( current_node.value ):
+for neighbor in graph.neighbors( current_node.point ):
 ```
 
 We get each of the current point neighbors
 
 ```python
 new_cost = ( current_node.priority
-            + graph.cost(current_node.value, neighbor)
+            + graph.cost(current_node.point, neighbor)
             + heuristic( neighbor, end) )
-
-new_node = Node(new_cost, neighbor, current_node.value)
+             
+new_node = Node(priority = new_cost, point = neighbor, came_from=current_node.point)
 
 frontier.insert(new_node)
 
@@ -161,7 +163,7 @@ class DijkstraHeap(list):
         :return: None
         """
 
-        if element.value not in self.visited:
+        if element.point not in self.visited:
             heapq.heappush(self,element)
 
     def pop(self):
@@ -171,11 +173,11 @@ class DijkstraHeap(list):
         :return: A Node object
         """
 
-        while self and self[0].value in self.visited:
+        while self and self[0].point in self.visited:
             heapq.heappop(self)
 
         next_elem = heapq.heappop(self)
-        self.visited[next_elem.value] = next_elem.came_from
-        self.costs[next_elem.value] = next_elem.priority
+        self.visited[next_elem.point] = next_elem.came_from
+        self.costs[next_elem.point] = next_elem.priority
         return next_elem
 ```

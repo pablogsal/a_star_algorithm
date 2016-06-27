@@ -43,7 +43,7 @@ class DijkstraHeap(list):
         :return: None
         """
 
-        if element.value not in self.visited:
+        if element.point not in self.visited:
             heapq.heappush(self,element)
 
     def pop(self):
@@ -53,18 +53,18 @@ class DijkstraHeap(list):
         :return: A Node object
         """
 
-        while self and self[0].value in self.visited:
+        while self and self[0].point in self.visited:
             heapq.heappop(self)
 
         next_elem = heapq.heappop(self)
-        self.visited[next_elem.value] = next_elem.came_from
-        self.costs[next_elem.value] = next_elem.priority
+        self.visited[next_elem.point] = next_elem.came_from
+        self.costs[next_elem.point] = next_elem.priority
         return next_elem
 
 
 
 
-Node = collections.namedtuple("Node","priority value came_from")
+Node = collections.namedtuple("Node","priority point came_from")
 
 def a_star(graph, start, end):
     """
@@ -87,16 +87,16 @@ def a_star(graph, start, end):
 
         current_node = frontier.pop()
 
-        if current_node.value == end:
+        if current_node.point == end:
             return frontier
 
-        for neighbor in graph.neighbors( current_node.value ):
+        for neighbor in graph.neighbors( current_node.point ):
 
             new_cost = ( current_node.priority
-                         + graph.cost(current_node.value, neighbor)
+                         + graph.cost(current_node.point, neighbor)
                          + heuristic( neighbor, end) )
 
-            new_node = Node(new_cost, neighbor, current_node.value)
+            new_node = Node(new_cost, neighbor, current_node.point)
 
             frontier.insert(new_node)
 
