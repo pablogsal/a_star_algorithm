@@ -94,7 +94,7 @@ def a_star(graph, start, end):
 
             new_cost = ( current_node.priority
                          + graph.cost(current_node.value, neighbor)
-                         + heuristic( current_node.value, neighbor) )
+                         + heuristic( neighbor, end) )
 
             new_node = Node(new_cost, neighbor, current_node.value)
 
