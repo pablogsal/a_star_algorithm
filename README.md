@@ -4,7 +4,7 @@ A Pythonic implementation of the famous A* algorithm.
 
 # Why ANOTHER implementation
 
-Because coding is awesome! Also because I really dislike the mess that the usual implementations creates. The A* algorithm is simple and beautiful and so must be its implementation.
+Because coding is awesome! Also because I really dislike the mess that the usual implementations create. The A* algorithm is simple and beautiful and so must be its implementation.
 
 # How is THIS diferent?
 
