@@ -193,4 +193,4 @@ I think the deep logic about A* can be sumarized in the following two simple poi
 
 * We artificially alter the cost of visiting one node taking into account how far this particular node is from the destination, making the furthest nodes more costly.
 
-And all the stuff about the cost queue, the heap, not visiting a node already visited, what we do with nodes in the queue that have been visited.....that is important stuff but ** is NOT the A* algorithm ** : it is secondary logic and secondary problems that lead to secondary data structures.
+And all the stuff about the cost queue, the heap, not visiting a node already visited, what we do with nodes in the queue that have been visited.....that is important stuff but **is NOT** the A* algorithm: it is secondary logic and secondary problems that lead to secondary data structures.
