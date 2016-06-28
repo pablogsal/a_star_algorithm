@@ -90,6 +90,9 @@ while frontier:
 
 We loop while we have elements in the queue.
 
+
+At this point maybe you are asking yourself why the name `frontier`? Well, this is because when you are at the starting point and you visit neighbors, the queue of the nodes to be visited is like a expanding frontier (imagine a closed curve that becomes bigger and bigger in size). From which sides this frontier will expand first depends on the weights of the nodes among other things (like the distance to the ending point...etc).
+
 ```python
 current_node = frontier.pop()
 ```
