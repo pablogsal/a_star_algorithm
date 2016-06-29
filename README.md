@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pablogsal/a_star_algorithm.svg?branch=master)](https://travis-ci.org/pablogsal/a_star_algorithm)
 
-[![Coverage Status](https://coveralls.io/repos/pablogsal/a_star/badge.svg?branch=master&service=github)](https://coveralls.io/github/pablogsal/a_star?branch=master)
+[![Coverage Status](https://coveralls.io/repos/pablogsal/a_star_algorithm/badge.svg?branch=master&service=github)](https://coveralls.io/github/pablogsal/a_star_algorithm?branch=master)
 
 # What is THIS?
 
@@ -18,7 +18,7 @@ This is different because I refactored all the logic in propositional layers. Th
 
 # How can it be TESTED?
 
-It comes with a `test_a_star.py` snippet to test the algorithm in a simple weighted maze ( with random weights ). If you run it you will obtain something like this:
+It comes with a `maze_solving_example.py` snippet to test the algorithm in a simple weighted maze ( with random weights ). If you run it you will obtain something like this:
 
 <p align="center">
 <img src="./doc/sample.png">
