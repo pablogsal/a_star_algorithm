@@ -112,7 +112,7 @@ def from_id_width(point, width):
 
 if __name__ == '__main__':
 
-     import a_star
+     import a_star.a_star as a_star
      import random
 
      # Construct a cool wall collection from this aparently arbitraty points.
