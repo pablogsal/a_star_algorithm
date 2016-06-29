@@ -1,8 +1,6 @@
 
 
-[![Build Status](https://travis-ci.org/pablogsal/a_star_algorithm.svg?branch=master)](https://travis-ci.org/pablogsal/a_star_algorithm)
-
-[![Coverage Status](https://coveralls.io/repos/pablogsal/a_star_algorithm/badge.svg?branch=master&service=github)](https://coveralls.io/github/pablogsal/a_star_algorithm?branch=master)
+[![Build Status](https://travis-ci.org/pablogsal/a_star_algorithm.svg?branch=master)](https://travis-ci.org/pablogsal/a_star_algorithm)    [![Coverage Status](https://coveralls.io/repos/pablogsal/a_star_algorithm/badge.svg?branch=master&service=github)](https://coveralls.io/github/pablogsal/a_star_algorithm?branch=master)
 
 # What is THIS?
 
