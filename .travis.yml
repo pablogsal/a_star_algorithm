@@ -10,6 +10,6 @@ install:
   - pip install coveralls
 # Run tests
 script:
-  - nosetests --with-coverage --cover-package=fits_reduce --cover-inclusive
+  - nosetests --with-coverage --cover-package=a_star --cover-inclusive
 after_success:
   - coveralls
