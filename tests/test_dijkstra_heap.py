@@ -1,6 +1,6 @@
 
 import unittest
-import a_star.a_star as a_star
+import a_star
 
 
 

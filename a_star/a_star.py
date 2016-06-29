@@ -88,7 +88,7 @@ def a_star(graph, start, end):
 
         current_node = frontier.pop()
 
-        if not current_node or current_node.point == end:
+        if not current_node: #or current_node.point == end:
             return frontier
 
         for neighbor in graph.neighbors( current_node.point ):
