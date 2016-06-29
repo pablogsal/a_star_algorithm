@@ -1,3 +1,7 @@
+
+
+[![Build Status](https://travis-ci.org/pablogsal/a_star_algorithm.svg?branch=master)](https://travis-ci.org/pablogsal/a_star_algorithm)
+
 # What is THIS?
 
 A Pythonic implementation of the famous A* algorithm.

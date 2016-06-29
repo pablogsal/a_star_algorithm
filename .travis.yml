@@ -2,12 +2,7 @@
 # http://docs.travis-ci.com/user/languages/python/
 language: python
 python:
-  - "3.5_with_system_site_packages"
-
-# Install numpy and scipy to avoid the painful compilation
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq python-numpy python-scipy
+  - "3.5"
 
 # Install fits_reduce...
 install:
