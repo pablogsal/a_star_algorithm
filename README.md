@@ -178,11 +178,12 @@ class DijkstraHeap(list):
 
         while self and self[0].point in self.visited:
             heapq.heappop(self)
-
-        next_elem = heapq.heappop(self)
-        self.visited[next_elem.point] = next_elem.came_from
-        self.costs[next_elem.point] = next_elem.cost
-        return next_elem
+        
+        if self:
+            next_elem = heapq.heappop(self)
+            self.visited[next_elem.point] = next_elem.came_from
+            self.costs[next_elem.point] = next_elem.cost
+            return next_elem
 ```
 
 # So WHAT is this deep logic you talk about?

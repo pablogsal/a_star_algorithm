@@ -1,0 +1,20 @@
+# Travis configuration file
+# http://docs.travis-ci.com/user/languages/python/
+language: python
+python:
+  - "3.5_with_system_site_packages"
+
+# Install numpy and scipy to avoid the painful compilation
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq python-numpy python-scipy
+
+# Install fits_reduce...
+install:
+  - pip install .
+  - pip install coveralls
+# Run tests
+script:
+  - nosetests --with-coverage --cover-package=fits_reduce --cover-inclusive
+after_success:
+  - coveralls
