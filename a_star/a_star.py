@@ -67,7 +67,7 @@ class DijkstraHeap(list):
 
 Node = collections.namedtuple("Node","cost point came_from")
 
-def a_star(graph, start, end):
+def a_star_search(graph, start, end):
     """
     Calculates the shortest path from start to end.
 

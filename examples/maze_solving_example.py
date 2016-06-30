@@ -41,7 +41,7 @@ if __name__ == '__main__':
                                             (7, 3), (7, 4), (7, 5)]}
 
      # Call the A* algorithm and get the frontier
-     frontier = a_star.a_star(graph = graph, start=(1, 4), end=(7, 8))
+     frontier = a_star.a_star_search(graph = graph, start=(1, 4), end=(7, 8))
 
      # Print the results
 

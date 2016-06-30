@@ -26,7 +26,7 @@ class MazeTests(unittest.TestCase):
         start = (0,2)
 
         # Call the A* algorithm and get the frontier
-        frontier = a_star.a_star(graph = maze, start=start, end=end)
+        frontier = a_star.a_star_search(graph = maze, start=start, end=end)
         solution = list(backtrack(frontier.visited,start,end))
         self.assertTrue( solution == my_solution  )
 
@@ -42,7 +42,7 @@ class MazeTests(unittest.TestCase):
         end = (3,1)
 
         # Call the A* algorithm and get the frontier
-        frontier = a_star.a_star(graph = maze, start=start, end=end)
+        frontier = a_star.a_star_search(graph = maze, start=start, end=end)
         maze.draw(width=3, point_to = frontier.visited, start=start, goal=end)
         maze.draw(width=3, number = frontier.costs, start=start, goal=end)
         print(frontier.visited)
