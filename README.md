@@ -37,7 +37,7 @@ Yeah! The idea of the A* algorithm is that starting from the start point we visi
 The A* algorithm is basically the following:
 
 ```python
-def a_star(graph, start, end):
+def a_star_search(graph, start, end):
     """
     Calculates the shortest path from start to end.
 
@@ -58,7 +58,7 @@ def a_star(graph, start, end):
 
         current_node = frontier.pop()
 
-        if current_node.point == end:
+        if not current_node or current_node.point == end:
             return frontier
 
         for neighbor in graph.neighbors( current_node.point ):
@@ -104,7 +104,7 @@ current_node = frontier.pop()
 Each iteration we pop an element from the DijkstraHeap. This element always has the lowest cost element because the DijkstraHeap has this property ( because is a heap and heaps are awesome ).
 
 ```python
-if current_node.point == end:
+if not current_node or current_node.point == end:
     return frontier
 ```
 
