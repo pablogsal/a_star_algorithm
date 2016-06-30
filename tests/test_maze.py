@@ -31,22 +31,25 @@ class MazeTests(unittest.TestCase):
         self.assertTrue( solution == my_solution  )
 
 
-    def test_2(self):
+    def test_weights_instead_of_walls(self):
         maze = GridWithWeights(4,4)
         walls = []
         maze.walls = walls
-        weights = {(0,0): 3, (0,1):1, (1,1): 4, (2,1):5,(3,1):1,(0,2): 2, (1,2):3, (2,2):3, (3,2): 2}
+        weights = { (1,1):300, (1,2): 300, (1,3):300}
         maze.weights = weights
 
-        start = (0,1)
-        end = (3,1)
+        start = (0,3)
+        end = (3,3)
 
+        my_solution = [(3, 3), (2, 3), (2, 2), (2, 1),
+                       (2, 0), (1, 0), (0, 0), (0, 1),
+                       (0, 2), (0, 3)]
         # Call the A* algorithm and get the frontier
         frontier = a_star.a_star_search(graph = maze, start=start, end=end)
-        maze.draw(width=3, point_to = frontier.visited, start=start, goal=end)
-        maze.draw(width=3, number = frontier.costs, start=start, goal=end)
-        print(frontier.visited)
 
+        solution = list(backtrack(frontier.visited,start,end))
+
+        self.assertTrue( solution == my_solution  )
 
 if __name__ == "__main__":
     unittest.main()
