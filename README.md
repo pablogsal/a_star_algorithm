@@ -192,7 +192,7 @@ class DijkstraHeap(list):
 
 # So WHAT is this deep logic you talk about?
 
-I think the deep logic about A* can be sumarized in the following two simple points:
+I think the deep logic about A* can be summarized in the following two simple points:
 
 * We visit the nodes in order, being this order the cost of going from the starting point to this particular node.
 
