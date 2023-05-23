@@ -21,7 +21,7 @@ class MazeTests(unittest.TestCase):
         maze.walls = walls
         weights = {(1,0):20,(3,0) : 2}
         maze.weights = weights
-        my_solution = [(3,0),(3,1),(3,2),(3,3),(2,3),(1,3),(1,2),(0,2)]
+        my_solution = [(3,0),(3,1),(3,2),(3,3),(2,3),(1,3),(0,3),(0,2)]
         end = (3,0)
         start = (0,2)
 

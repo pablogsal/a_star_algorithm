@@ -47,6 +47,11 @@ if __name__ == '__main__':
 
      graph.draw(width=5, point_to = frontier.visited, start=(1, 4), goal=(7, 8))
 
-     print()
+     print("[costs]")
 
-     graph.draw(width=5, number = frontier.costs, start=(1, 4), goal=(7, 8))
+     costs_so_far = { k: v - a_star.heuristic(k, (7, 8)) for k,v in frontier.costs.items() }
+     graph.draw(width=5, number = costs_so_far, start=(1, 4), goal=(7, 8))
+
+     print("[total cost estimates]")
+
+     graph.draw(width=5, number = frontier.costs, start=(1, 4), goal=(7, 8)) #  cost estimates

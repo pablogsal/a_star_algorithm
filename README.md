@@ -18,9 +18,32 @@ This is different because I refactored all the logic in propositional layers. Th
 
 It comes with a `maze_solving_example.py` snippet to test the algorithm in a simple weighted maze ( with random weights ). If you run it you will obtain something like this:
 
-<p align="center">
-<img src="./doc/sample.png">
-</p>
+```
+$ python examples/maze_solving_example.py
+↓    ↓    ←    ←    ←    ←    ←    ←    ←    .
+↓    ↓    ←    ←    ←    ↑    ↑    ←    ←    .
+↓    ↓    ←    ←    ←    .    .    ↑    ←    .
+↓    ↓    ←    ##########.    .    .    ↑    .
+→    S    ←    ##########.    .    .    ↑    .
+↑    ↑    ←    ##########.    .    .    ↑    .
+↑    ↑    ←    ##########.    .    →    ↑    .
+↑    ↑    ←    ##########.    .    ↑    .    .
+↑    ↑    ←    ##########.    .    E    .    .
+↑    ↑    ←    ##########.    .    .    .    .
+
+5    4    5    6    7    8    9    10   11   .
+4    3    4    5    10   10   10   11   12   .
+3    2    3    4    11   .    .    12   13   .
+2    1    2    ##########.    .    .    14   .
+1    S    1    ##########.    .    .    15   .
+2    1    2    ##########.    .    .    16   .
+3    2    3    ##########.    .    18   17   .
+4    3    4    ##########.    .    19   .    .
+5    4    5    ##########.    .    E    .    .
+6    5    6    ##########.    .    .    .    .
+
+[...]
+```
 
 The first diagram represents where each point came from. Starting in the E ( standing for ENDING POINT) we backtrack each arrow untill we reach the S ( standing for STARTING POINT). This path is the shortest path. And you know what? 
 
@@ -29,6 +52,8 @@ The first diagram represents where each point came from. Starting in the E ( sta
 The arcane forces of A* make that if you start in a visited point and backtrack using the arrows you will get the shortest path.
 
 The second diagram is the cost to reach each point from the START (S).
+
+A third diagram, not shown here, will also be printed. This diagram shows the estimated total cost from START (S) to END (E) at each point, which is central to the efficiency of the A* algoritm as explained below.
 
 # Can you EXPLAIN the algorithm?
 
@@ -52,22 +77,25 @@ def a_star_search(graph, start, end):
 
     """
 
-    frontier = DijkstraHeap( Node(cost = 0, point = start, came_from = None) )
+    frontier = DijkstraHeap( Node(cost_estimate=heuristic(start, end), point=start, came_from=None) )
 
     while frontier:
 
         current_node = frontier.pop()
 
-        if not current_node or current_node.point == end:
+        if current_node is None:
+            raise ValueError("No path exists")
+        if current_node.point == end:
             return frontier
 
         for neighbor in graph.neighbors( current_node.point ):
 
-            new_cost = ( current_node.cost
+            cost_so_far = current_node.cost_estimate - heuristic(current_node.point, end)
+            new_cost = ( cost_so_far
                          + graph.cost(current_node.point, neighbor)
-                         + heuristic( neighbor, end) )
+                         + heuristic(neighbor, end) )
 
-            new_node = Node(cost = new_cost, point = neighbor, came_from=current_node.point)
+            new_node = Node(cost_estimate=new_cost, point=neighbor, came_from=current_node.point)
 
             frontier.insert(new_node)
 
@@ -76,7 +104,7 @@ def a_star_search(graph, start, end):
 Lets go line by line:
 
 ```python
-frontier = DijkstraHeap( Node(0, start, None) )
+frontier = DijkstraHeap( Node(cost_estimate=heuristic(start, end), point=start, came_from=None) )
 ```
 
 This line creates a DijkstraHeap object and puts the starting point in it. We will see later how this can be implemented but the best part is that....This is not part of the algorithm! What is a DijkstraHeap then? This is a **cost queue** that has the following properties:
@@ -86,16 +114,13 @@ This line creates a DijkstraHeap object and puts the starting point in it. We wi
 
 Cool! So this DijkstraHeap knows the visiting order of the elements. Its **like a heap but never pops an already visited element**.
 
-By the way, a Node object is a tuple of the form ( cost_so_far, point, point_from_we_came ).
+By the way, a Node object is a tuple of the form ( total_cost_estimate, point, point_from_we_came ).
 
 ```python
-while frontier:
+while True:
 ```
 
-We loop while we have elements in the queue.
-
-
-At this point maybe you are asking yourself why the name `frontier`? Well, this is because when you are at the starting point and you visit neighbors, the queue of the nodes to be visited is like a expanding frontier (imagine a closed curve that becomes bigger and bigger in size). From which sides this frontier will expand first depends on the weights of the nodes among other things (like the distance to the ending point...etc).
+We loop until we have found a path, or failed to find one by exhausting all elements in the queue.
 
 ```python
 current_node = frontier.pop()
@@ -103,8 +128,12 @@ current_node = frontier.pop()
 
 Each iteration we pop an element from the DijkstraHeap. This element always has the lowest cost element because the DijkstraHeap has this property ( because is a heap and heaps are awesome ).
 
+At this point maybe you are asking yourself why the name `frontier`? Well, this is because when you are at the starting point and you visit neighbors, the queue of the nodes to be visited is like a expanding frontier (imagine a closed curve that becomes bigger and bigger in size). From which sides this frontier will expand first depends on the weights of the nodes among other things (like the distance to the ending point...etc).
+
 ```python
-if not current_node or current_node.point == end:
+if current_node is None:
+    raise ValueError("No path exists")
+if current_node.point == end:
     return frontier
 ```
 
@@ -117,11 +146,12 @@ for neighbor in graph.neighbors( current_node.point ):
 We get each of the current point neighbors
 
 ```python
-new_cost = ( current_node.cost
-            + graph.cost(current_node.point, neighbor)
-            + heuristic( neighbor, end) )
+cost_so_far = current_node.cost_estimate - heuristic(current_node.point, end)
+new_cost = ( cost_so_far
+             + graph.cost(current_node.point, neighbor)
+             + heuristic(neighbor, end) )
              
-new_node = Node(cost = new_cost, point = neighbor, came_from=current_node.point)
+new_node = Node(cost_estimate=new_cost, point=neighbor, came_from=current_node.point)
 
 frontier.insert(new_node)
 
@@ -129,13 +159,15 @@ frontier.insert(new_node)
 
 For each neighbor we calculate the new cost of reaching this neighbor from the current point. This cost is formed by three quantities:
 
-1. The current cost of reaching the current point.
+1. The cost of reaching the current point, which is the stored cost estimate minus the heuristic distance at that point (explained below).
 2. The cost of going from the current point to the neighbor.
 3. The distance of the neighbor to the end point that we are looking.
 
 Why this 3rd cost? Because we want to explore first the points that are near the end destination and expend less time in the points that are far from it. So if we artificially give the point a higher cost if the point is far from the destination it will be visited later.
 
-When we have calculated this new cost we insert the point in the cost queue.
+The new cost is thus an estimate of the total cost, without knowing what lies ahead. It grows along the path as we encounter obstacles or higher-cost steps. It is essential that the heuristic never overestimates the remaining distance, otherwise the path is not necessarily optimal since the best path may not be visited before we find the end (and terminate).
+
+When we have calculated this new cost estimate we insert the point in the cost queue.
 
 ## But what about the MISTERIOUS DijkstraHeap?
 

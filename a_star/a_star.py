@@ -59,13 +59,13 @@ class DijkstraHeap(list):
         if self:
             next_elem = heapq.heappop(self)
             self.visited[next_elem.point] = next_elem.came_from
-            self.costs[next_elem.point] = next_elem.cost
+            self.costs[next_elem.point] = next_elem.cost_estimate
             return next_elem
 
 
 
 
-Node = collections.namedtuple("Node","cost point came_from")
+Node = collections.namedtuple("Node","cost_estimate point came_from")
 
 def a_star_search(graph, start, end):
     """
@@ -82,20 +82,23 @@ def a_star_search(graph, start, end):
 
     """
 
-    frontier = DijkstraHeap( Node(0, start, None) )
+    frontier = DijkstraHeap( Node(heuristic(start, end), start, None) )
 
-    while frontier:
+    while True:
 
         current_node = frontier.pop()
 
-        if not current_node: #or current_node.point == end:
+        if not current_node:
+            raise ValueError("No path from start to end")
+        if current_node.point == end:
             return frontier
 
         for neighbor in graph.neighbors( current_node.point ):
 
-            new_cost = ( current_node.cost
+            cost_so_far = current_node.cost_estimate - heuristic(current_node.point, end)
+            new_cost = ( cost_so_far
                          + graph.cost(current_node.point, neighbor)
-                         + heuristic( neighbor, end) )
+                         + heuristic(neighbor, end) )
 
             new_node = Node(new_cost, neighbor, current_node.point)
 
